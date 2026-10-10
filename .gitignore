@@ -1,0 +1,10 @@
+web/node_modules/
+web/dist/
+web/.astro/
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+.tools/
+.local/

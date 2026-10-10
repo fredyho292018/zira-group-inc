@@ -1,0 +1,17 @@
+---
+const services = [
+  ['General Construction & Remodeling', 'Spaces built around your vision.'],
+  ['Pool Construction & Renovation', 'A fresh perspective on outdoor living.'],
+  ['Impact Windows & Doors', 'Thoughtful improvements for your property.'],
+  ['Kitchen & Bathroom Remodeling', 'Everyday spaces, reimagined.'],
+  ['Roofing & Exterior Improvements', 'A considered approach to your exterior.'],
+  ['Outdoor Living Spaces', 'Make room for life outside.'],
+];
+---
+<section id="services" class="section container" aria-labelledby="services-title">
+  <p class="eyebrow">Our services</p>
+  <h2 id="services-title">Your next chapter starts here.</h2>
+  <div class="grid gap-5 md:grid-cols-2 lg:grid-cols-3 service-grid">
+    {services.map(([name, description], index) => <article class="service-card"><span class="service-number" aria-hidden="true">0{index + 1}</span><h3>{name}</h3><p>{description}</p></article>)}
+  </div>
+</section>

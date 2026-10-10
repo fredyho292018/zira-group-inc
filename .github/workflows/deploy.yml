@@ -1,0 +1,64 @@
+name: Zira Production Deploy
+on:
+  workflow_run:
+    workflows: [Zira CI]
+    branches: [main]
+    types: [completed]
+permissions:
+  contents: read
+concurrency:
+  group: zira-production
+  cancel-in-progress: false
+jobs:
+  deploy:
+    # Set this repository variable only after production protections, secrets
+    # and a dedicated LAN runner have been verified. Default is blocked.
+    if: >-
+      github.event.workflow_run.conclusion == 'success' &&
+      github.event.workflow_run.event == 'push' &&
+      github.event.workflow_run.head_repository.full_name == github.repository &&
+      vars.ZIRA_CD_ENABLED == 'true'
+    runs-on: [self-hosted, Linux, X64, zira-production]
+    environment: production
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          ref: ${{ github.event.workflow_run.head_sha }}
+          persist-credentials: false
+      - name: Configure dedicated SSH credentials
+        env:
+          SSH_KEY: ${{ secrets.ZIRA_SSH_PRIVATE_KEY }}
+          KNOWN_HOSTS: ${{ secrets.ZIRA_SSH_KNOWN_HOSTS }}
+        run: |
+          set -euo pipefail
+          umask 077
+          mkdir -p "$RUNNER_TEMP/zira-ssh"
+          printf '%s\n' "$SSH_KEY" > "$RUNNER_TEMP/zira-ssh/key"
+          printf '%s\n' "$KNOWN_HOSTS" > "$RUNNER_TEMP/zira-ssh/known_hosts"
+          test -s "$RUNNER_TEMP/zira-ssh/key"
+          test -s "$RUNNER_TEMP/zira-ssh/known_hosts"
+      - name: Deploy immutable image
+        env:
+          SHA: ${{ github.event.workflow_run.head_sha }}
+          SSH_HOST: ${{ vars.ZIRA_SSH_HOST }}
+          SSH_USER: ${{ vars.ZIRA_SSH_USER }}
+          SSH_PORT: ${{ vars.ZIRA_SSH_PORT }}
+        run: |
+          set -euo pipefail
+          [[ "$SHA" =~ ^[0-9a-f]{40}$ ]]
+          [[ "$SSH_HOST" =~ ^[a-zA-Z0-9.-]+$ ]]
+          [[ "$SSH_USER" =~ ^[a-zA-Z_][a-zA-Z0-9_-]*$ ]]
+          [[ "$SSH_PORT" =~ ^[0-9]+$ ]]
+          options=(-i "$RUNNER_TEMP/zira-ssh/key" -o BatchMode=yes -o StrictHostKeyChecking=yes -o UpdateHostKeys=no -o "UserKnownHostsFile=$RUNNER_TEMP/zira-ssh/known_hosts")
+          ssh "${options[@]}" -p "$SSH_PORT" "$SSH_USER@$SSH_HOST" 'test -d /opt/zira-group-inc && test -w /opt/zira-group-inc'
+          scp "${options[@]}" -P "$SSH_PORT" infra/compose.yaml infra/deploy.sh infra/rollback.sh "$SSH_USER@$SSH_HOST:/opt/zira-group-inc/"
+          ssh "${options[@]}" -p "$SSH_PORT" "$SSH_USER@$SSH_HOST" "bash /opt/zira-group-inc/deploy.sh ghcr.io/fredyho292018/zira-group-inc:$SHA"
+      - name: Verify public HTTPS
+        run: |
+          set -euo pipefail
+          curl --fail --silent --show-error --retry 3 --max-time 30 https://ziragroupinc.com/ | grep -q 'Building Your Vision'
+          curl --fail --silent --show-error --location --retry 3 --max-time 30 https://www.ziragroupinc.com/ | grep -q 'Building Your Vision'
+          curl --silent --show-error --head --max-time 30 https://www.ziragroupinc.com/ | tr -d '\r' | grep -Ei '^location: https://ziragroupinc.com/'
+      - name: Remove temporary SSH credentials
+        if: always()
+        run: rm -f "$RUNNER_TEMP/zira-ssh/key" "$RUNNER_TEMP/zira-ssh/known_hosts"

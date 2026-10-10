@@ -1,0 +1,50 @@
+@import "tailwindcss";
+@theme { --color-navy: #11293d; --color-gold: #d6b36b; }
+:root { font-family: Arial, Helvetica, sans-serif; color: #11293d; background: #fff; font-synthesis: none; }
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { margin: 0; }
+a { color: inherit; text-decoration: none; }
+a:focus-visible { outline: 3px solid #b18434; outline-offset: 5px; }
+.container { width: min(1160px, calc(100% - 48px)); margin-inline: auto; }
+.site-header { background: #11293d; color: white; border-bottom: 1px solid #ffffff26; }
+.header-inner { display: flex; justify-content: space-between; align-items: center; gap: 32px; padding-block: 24px; }
+.brand { font-size: 32px; letter-spacing: .18em; font-weight: 700; line-height: 1; }
+.brand span { display: block; font-size: 10px; letter-spacing: .3em; margin-top: 7px; color: #d6b36b; }
+nav { display: flex; flex-wrap: wrap; gap: 28px; font-size: 14px; }
+nav a:hover { color: #d6b36b; }
+.hero { background: #11293d; color: white; padding-block: 90px 28px; overflow: hidden; }
+.hero-grid { display: grid; grid-template-columns: 1.6fr 1fr; gap: 48px; align-items: center; }
+.eyebrow { text-transform: uppercase; letter-spacing: .18em; font-size: 12px; font-weight: 700; color: #806020; margin: 0 0 22px; }
+.hero .eyebrow, .contact-section .eyebrow { color: #d6b36b; }
+h1 { font-size: clamp(36px, 4.4vw, 60px); line-height: 1.12; letter-spacing: -.035em; margin: 0 0 26px; font-weight: 600; }
+h1 span { color: #d6b36b; }
+.hero-description { color: #d4dce2; font-size: 17px; line-height: 1.7; max-width: 460px; }
+.button { display: inline-flex; gap: 30px; align-items: center; margin-top: 22px; padding: 17px 24px; background: #d6b36b; color: #11293d; font-size: 14px; font-weight: bold; }
+.button:hover { background: #e4c98f; }
+.hero-caption { font-size: 12px; color: #b8c6d0; margin-top: 80px; padding-top: 24px; border-top: 1px solid #ffffff26; }
+.architectural-mark { position: relative; height: 320px; display: grid; place-items: center; }
+.architectural-mark div { position: absolute; border: 1px solid #d6b36b65; width: 80%; height: 85%; transform: skewY(-12deg); }
+.architectural-mark div:nth-child(2) { width: 58%; height: 70%; transform: skewY(12deg); }
+.architectural-mark div:nth-child(3) { width: 35%; height: 95%; transform: skewY(-12deg); }
+.architectural-mark span { font-size: 140px; font-weight: 700; color: #d6b36b; opacity: .85; }
+.section { padding-block: 80px; scroll-margin-top: 24px; }
+h2 { font-size: clamp(29px, 3vw, 42px); font-weight: 500; line-height: 1.17; letter-spacing: -.025em; margin: 0 0 30px; }
+.service-grid { margin-top: 40px; }
+.service-card { background: #f6f7f7; padding: 30px; border-top: 2px solid #d6b36b; }
+.service-number { font-size: 12px; color: #806020; }
+h3 { font-size: 20px; font-weight: 600; line-height: 1.3; margin: 30px 0 14px; }
+.service-card p, .two-column p { color: #50616e; font-size: 15px; line-height: 1.8; }
+.about-section { background: #f6f7f7; }
+.two-column { display: grid; grid-template-columns: 1fr 1fr; gap: 70px; }
+.area-list { list-style: none; padding: 0; display: flex; flex-wrap: wrap; gap: 14px; }
+.area-list li { border: 1px solid #d5dde2; padding: 14px 21px; font-size: 15px; }
+.contact-section { background: #11293d; color: white; }
+.contact-section p:not(.eyebrow) { max-width: 600px; color: #d4dce2; line-height: 1.8; }
+.coming-soon { font-size: 13px; margin-top: 26px; }
+.site-footer { background: #0a1d2c; color: #b8c6d0; font-size: 12px; }
+.footer-inner { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 18px; padding-block: 28px; }
+.skip-link { position: absolute; top: -100px; left: 16px; padding: 12px; background: white; z-index: 10; }
+.skip-link:focus { top: 12px; }
+@media (max-width: 700px) { .container { width: calc(100% - 36px); } .header-inner { align-items: flex-start; flex-direction: column; gap: 24px; } nav { gap: 16px; font-size: 13px; } .hero { padding-top: 56px; } .hero-grid, .two-column { grid-template-columns: 1fr; gap: 28px; } .architectural-mark { display: none; } .hero-caption { margin-top: 48px; } .section { padding-block: 56px; } }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }

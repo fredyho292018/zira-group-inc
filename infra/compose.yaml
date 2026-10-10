@@ -1,0 +1,31 @@
+name: zira-group-inc
+services:
+  zira-web:
+    image: ${ZIRA_IMAGE:?Set ZIRA_IMAGE to a full commit SHA image}
+    container_name: zira-web
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:38081:80"
+    read_only: true
+    tmpfs:
+      - /tmp:rw,noexec,nosuid,size=32m,mode=1777
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    sysctls:
+      net.ipv4.ip_unprivileged_port_start: "0"
+    cpus: 0.50
+    mem_limit: 128m
+    pids_limit: 100
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+    networks:
+      - zira
+networks:
+  zira:
+    name: zira-group-inc
+    driver: bridge

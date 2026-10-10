@@ -1,0 +1,23 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/Header.astro';
+import Services from '../components/Services.astro';
+import Footer from '../components/Footer.astro';
+---
+<BaseLayout>
+  <Header />
+  <main id="main">
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="container hero-grid">
+        <div><p class="eyebrow">Construction & Remodeling · South Florida</p><h1 id="hero-title">Building Your Vision.<br /><span>Creating Your Future.</span></h1><p class="hero-description">Construction & Remodeling Services in South Florida.</p><a class="button" href="#services">Explore our services <span aria-hidden="true">↗</span></a></div>
+        <div class="architectural-mark" aria-hidden="true"><div></div><div></div><div></div><span>Z</span></div>
+      </div>
+      <div class="container hero-caption">A foundation for what comes next.</div>
+    </section>
+    <Services />
+    <section id="about" class="about-section section" aria-labelledby="about-title"><div class="container two-column"><div><p class="eyebrow">About us</p><h2 id="about-title">Built around<br />your vision.</h2></div><div><p>Zira Group Inc offers construction and remodeling services in South Florida.</p><p>From kitchens and bathrooms to outdoor living spaces, our services bring together the possibilities for your next project.</p></div></div></section>
+    <section id="areas" class="section container" aria-labelledby="areas-title"><p class="eyebrow">Service areas</p><h2 id="areas-title">Rooted in South Florida.</h2><ul class="area-list"><li>Miami</li><li>Hialeah</li><li>Fort Lauderdale</li><li>West Palm Beach</li><li>South Florida</li></ul></section>
+    <section id="contact" class="contact-section section" aria-labelledby="contact-title"><div class="container"><p class="eyebrow">Contact</p><h2 id="contact-title">Let's build what comes next.</h2><p>Our website is taking shape. Contact details will be published here when available.</p><p class="coming-soon">Zira Group Inc — Website Coming Soon</p></div></section>
+  </main>
+  <Footer />
+</BaseLayout>

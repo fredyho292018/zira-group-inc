@@ -1,0 +1,26 @@
+{
+  "name": "zira-group-inc-web",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "engines": { "node": ">=22.12.0" },
+  "scripts": {
+    "dev": "astro dev --host 127.0.0.1",
+    "check": "astro check",
+    "test": "node --test ../Validation/*.test.mjs",
+    "build": "astro build",
+    "preview": "astro preview --host 127.0.0.1",
+    "validate:infra": "node ../Validation/validate-infra.mjs"
+  },
+  "dependencies": {
+    "astro": "7.3.8",
+    "@astrojs/sitemap": "3.7.4",
+    "@tailwindcss/vite": "4.3.3",
+    "tailwindcss": "4.3.3"
+  },
+  "devDependencies": {
+    "@astrojs/check": "0.9.10",
+    "typescript": "6.0.3",
+    "yaml": "2.8.1"
+  }
+}

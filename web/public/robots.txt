@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://ziragroupinc.com/sitemap-index.xml
