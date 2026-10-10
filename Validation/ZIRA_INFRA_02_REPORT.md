@@ -1,28 +1,31 @@
 # ZIRA-INFRA-02 execution report
 
-Date: 2026-10-10 (America/Chicago). Initial checkpoint before GitHub CI and first deployment. This report will be updated with observed external results.
+Date: 2026-10-10 (America/Chicago). Final infrastructure/deployment checkpoint. Overall result is BLOCKED for public routing and automated CD, with a successful controlled production deployment.
 
 ```text
 BASE_SHA=97cff2e01d8ed2b86a04cffda4376345eba15471
-FINAL_SHA=PENDING_COMMIT
+FINAL_SHA=368299e1565e26529f1634574b66e2d07c15b7c6 (final validated implementation/deployed release; documentation-only report commit is separate)
 BRANCH=main
 SSH_ACCESS=PASS (192.168.1.147; known host key verified)
 PROJECT_STRUCTURE=PASS
 ASTRO_BUILD=PASS
 DOCKER_BUILD=PASS
-DOCKER_HEALTH=PASS (local)
-LOCAL_HTTP=PASS (workstation); PRODUCTION_PENDING
-GHCR_PUBLISH=PENDING
-GITHUB_CI=PENDING; LOCAL_ACTIONLINT=PASS
-GITHUB_CD=BLOCKED (disabled; dedicated runner/key missing)
-PRODUCTION_DEPLOY=PENDING
-CLOUDFLARE_TUNNEL=SERVICE_ACTIVE; DASHBOARD_ROUTE_VERIFICATION_PENDING
-ROOT_DOMAIN_HTTPS=FAIL (HTTP 525 before deployment)
-WWW_DOMAIN_HTTPS=FAIL (HTTP 502 before deployment)
-EXISTING_SERVICES_PRESERVED=READ_ONLY_AUDIT_PASS; POST_DEPLOY_PENDING
-ROLLBACK_READY=IMPLEMENTED; NOT_EXERCISED
-BLOCKERS=Dedicated CI SSH key and LAN runner unavailable; public routing pending
-NEXT=Commit/push validated files, wait for GitHub CI/GHCR, attempt controlled first deployment
+DOCKER_HEALTH=PASS (workstation and production)
+LOCAL_HTTP=PASS (workstation and production; production 200)
+GHCR_PUBLISH=PASS (SHA tag published by successful GitHub CI; server pull succeeded)
+GITHUB_CI=PASS (38080462995); LOCAL_ACTIONLINT=PASS
+GITHUB_CD=BLOCKED (disabled; dedicated runner/key missing; workflow 38080572484 skipped)
+PRODUCTION_DEPLOY=PASS (controlled manual initial deployment, not automated CD)
+CLOUDFLARE_TUNNEL=SERVICE_ACTIVE; UUID_VERIFIED; ROOT_INGRESS_HOSTNAME_DUPLICATED
+ROOT_DOMAIN_HTTPS=FAIL (HTTP 525 after deployment)
+WWW_DOMAIN_HTTPS=FAIL_END_TO_END (current Cloudflare edge returns 301; cached route TLS fails; root destination fails)
+EXISTING_SERVICES_PRESERVED=PASS (all 9 IDs/images unchanged, healthy; existing web HTTP 200)
+ROLLBACK_READY=PREPARED_NOT_EXERCISED; NO_PREVIOUS_RELEASE_ON_FIRST_DEPLOY
+BLOCKERS=Dedicated CI SSH key and LAN runner unavailable; duplicated root ingress; DNS dashboard verification/correction and propagation
+NEXT=Authorize precise Cloudflare/DNS correction separately; provision dedicated CD key and LAN runner; verify HTTPS before enabling CD
+ZIRA_INFRA_02=BLOCKED_PARTIAL_SUCCESS
+WEBSITE_V0=DEPLOYED_LOCAL_PRODUCTION_ORIGIN
+PUBLIC_PASS=NO
 ```
 
 ## Destination correction and production inventory
@@ -43,7 +46,7 @@ Correct destination: `teamfho-server`, Ubuntu 24.04.4 LTS, deploy UID 1000 with 
 | teamfho-prod-postgres-1 | postgres:17-alpine | healthy; internal 5432 |
 | teamfho-test-postgres-1 | postgres:17-alpine | healthy; internal 5432 |
 
-Initial HTTP: TeamFHO production 28080=200; test 18080=200; Domino 38080=200. Inventory will be compared after deployment.
+Initial and post-deployment HTTP: TeamFHO production 28080=200; test 18080=200; Domino 38080=200. All nine existing container IDs and images stayed identical and all remained healthy. Their IDs, in the same row order above: `6c38cee3611c`, `043c3d149858`, `e2dd5ec6de4f`, `cdb0f0b38cad`, `46cf2ad8b5b1`, `45963ac77901`, `4de147dda9f4`, `f321b5469e8e`, `069a071399f4`.
 
 ## Local validation and decisions
 
@@ -64,3 +67,25 @@ Initial HTTP: TeamFHO production 28080=200; test 18080=200; Domino 38080=200. In
 `AGENTS.md`, `README.md`, `.gitignore`, `.gitattributes`, `.dockerignore`; `web/package.json`, `web/package-lock.json`, `web/tsconfig.json`, `web/astro.config.mjs`, `web/.env.example`; `web/src/components/{Header,Services,Footer}.astro`, `web/src/layouts/BaseLayout.astro`, `web/src/pages/index.astro`, `web/src/styles/global.css`; `web/public/{favicon.svg,robots.txt,health.txt}`; `infra/{Dockerfile,Caddyfile,compose.yaml,deploy.sh,rollback.sh,PRODUCTION.md}`; `.github/workflows/{ci,deploy}.yml`, `.github/actionlint.yaml`; `Validation/{site.test.mjs,validate-infra.mjs,ZIRA_INFRA_02_REPORT.md}`.
 
 Ignored local tooling, node_modules, build outputs and credential-free API helper scripts are not part of the delivery.
+
+## External checkpoint
+
+Implementation commit `368299e1565e26529f1634574b66e2d07c15b7c6` committed/pushed to main after local checks passed. [GitHub CI run](https://github.com/fredyho292018/zira-group-inc/actions/runs/38080462995): validation and registry publication jobs completed successfully, including real Linux Docker build/runtime smoke checks. [CD run](https://github.com/fredyho292018/zira-group-inc/actions/runs/38080572484) was deliberately skipped by the disabled gate; this is not CD PASS.
+
+Filtered cloudflared-zira events identify tunnel UUID `a8662c8d-37b2-454b-bc92-b7458144bf7f`; latest ingress contains `ziragroupinc.com.ziragroupinc.com` (incorrect) and `www.ziragroupinc.com` (correct), both using `http://localhost:38081`, plus catchall 404. Correcting the duplicated hostname is outside current authorization.
+
+Workstation resolver cache returned root A values `207.207.210.23`, `207.207.210.36`, `207.207.210.50` and effective www CNAME `uixie.porkbun.com`. Public resolver 1.1.1.1 subsequently returned Cloudflare edges `104.21.63.42` and `172.67.143.17` for both hostnames, with Cloudflare NS `bart.ns.cloudflare.com` and `laura.ns.cloudflare.com`. This distinction corrects the initial interpretation of local cached answers as current public DNS. Origin DNS values behind the proxy still require dashboard inspection.
+
+Proposed target for separately authorized dashboard correction: CNAME `@` and exact `www` → `a8662c8d-37b2-454b-bc92-b7458144bf7f.cfargotunnel.com`, proxied. Correct ingress from `ziragroupinc.com.ziragroupinc.com` to `ziragroupinc.com`. Only replace the three inherited A records if the dashboard confirms them; inspect exact www versus wildcard before changing it. Preserve wildcard consumers and all mail records. No DNS or ingress changes executed.
+
+## Controlled first deployment and final verification
+
+After CI/publication success, deploy's existing Docker authentication successfully pulled the exact image. No credentials or package visibility changes were needed. Registry digest: `sha256:7acd40cc30b02120b362aaba1f842f33c2489fde31f2db52cfa937bd91b6abc9`.
+
+Created only `/opt/zira-group-inc` (deploy ownership, mode 0750), uploaded the three deployment files and ran deploy.sh for the full SHA. New container ID `b7eb0aa531e7`, project/network `zira-group-inc`, only binding `127.0.0.1:38081:80`. Health healthy, runtime user `10001:10001`, read-only root, all capabilities dropped, 128 MiB limit, 0.5 CPU. HTTP root 200 with expected Zira content; `/health.txt` returned `zira-ok`. Local canonical www redirect 301 passed. Both cloudflared services remained active; no service restart was performed.
+
+Root HTTPS returned 525 from Windows and Linux after deployment. Default cached www resolution failed TLS with both Schannel and OpenSSL. Explicitly resolving www to the current Cloudflare edge `104.21.63.42` produced real HTTPS 301 with certificate verification enabled. This validates current edge routing only; canonical root remains unavailable, so www is not end-to-end PASS. No insecure TLS option was used.
+
+Rollback code and shell validation are ready, but there is no `.previous.env` on a first release and rollback against a previous successful production image has not been exercised. Do not claim a rollback test passed. Do not remove a healthy origin to compensate for a DNS/TLS routing issue.
+
+Only the implementation release SHA is embedded above: a tracked report cannot embed its own eventual commit hash. Resolve the documentation revision with `git log -1 --format=%H -- Validation/ZIRA_INFRA_02_REPORT.md`; it does not change the deployed application. Final chat records the repository HEAD after the documentation commit.
