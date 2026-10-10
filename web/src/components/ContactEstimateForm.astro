@@ -1,0 +1,34 @@
+---
+import { SERVICES, LIMITS } from '../lib/contact';
+const privacy = import.meta.env.PUBLIC_CONTACT_PRIVACY_URL ?? '';
+const sitekey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY ?? '';
+const privacyReady = /^https:\/\//.test(privacy);
+const enabled = import.meta.env.PUBLIC_CONTACT_ENABLED === 'true' && privacyReady && !!sitekey;
+---
+<section id="contact" class="estimate-section" aria-labelledby="estimate-title">
+  <div class="container estimate-layout">
+    <div class="estimate-intro"><p class="eyebrow">Your next project</p><h2 id="estimate-title">Request a Free Estimate</h2><p>Tell us what you have in mind. Share your project details so our team can understand your needs.</p><p class="estimate-notice" id="contact-availability">{enabled ? 'Please do not include payment details or other sensitive information.' : 'Demo mode — Your information has not been sent. You can try the fields with fictional details. Sending is disabled.'}</p><p class="estimate-required">All fields are required.</p></div>
+    <form id="estimate-form" class="estimate-form" method="post" action="/api/contact" data-enabled={String(enabled)} data-sitekey={enabled ? sitekey : ''} aria-describedby="contact-availability" novalidate>
+      <fieldset>
+        <legend class="sr-only">Project and contact details</legend>
+        <div class="estimate-fields">
+          <div class="estimate-field"><label for="fullName">Full Name</label><input id="fullName" name="fullName" autocomplete="name" required maxlength={LIMITS.fullName} aria-describedby="fullName-error" /><span id="fullName-error" class="field-error"></span></div>
+          <div class="estimate-field"><label for="email">Email Address</label><input id="email" name="email" type="email" autocomplete="email" required maxlength={LIMITS.email} aria-describedby="email-error" /><span id="email-error" class="field-error"></span></div>
+          <div class="estimate-field"><label for="phone">Phone Number</label><input id="phone" name="phone" type="tel" autocomplete="tel" required maxlength={LIMITS.phone} aria-describedby="phone-error" /><span id="phone-error" class="field-error"></span></div>
+          <div class="estimate-field"><label for="service">Service Needed</label><select id="service" name="service" required aria-describedby="service-error"><option value="">Select a service</option>{SERVICES.map(service => <option>{service}</option>)}</select><span id="service-error" class="field-error"></span></div>
+          <div class="estimate-field estimate-wide"><label for="city">Project City</label><input id="city" name="city" autocomplete="address-level2" required maxlength={LIMITS.city} aria-describedby="city-error" /><span id="city-error" class="field-error"></span></div>
+          <div class="estimate-field estimate-wide"><label for="message">Project Description</label><textarea id="message" name="message" rows="5" required minlength="20" maxlength={LIMITS.message} aria-describedby="message-help message-error"></textarea><span id="message-help" class="field-help">20–3,000 characters. Please avoid sensitive information.</span><span id="message-error" class="field-error"></span></div>
+        </div>
+        <div class="consent-field"><label><input type="checkbox" name="consent" id="consent" required disabled={!enabled} aria-describedby="consent-error" /><span>I consent to the processing of these details to respond to my request. {privacyReady ? <a href={privacy} target="_blank" rel="noopener noreferrer">Read the Privacy Policy (opens a new tab)</a> : <span>Privacy Policy pending publication; consent and submission are unavailable.</span>}</span></label><span id="consent-error" class="field-error"></span></div>
+        <div id="contact-turnstile" aria-describedby="turnstileToken-error"></div><span id="turnstileToken-error" class="field-error"></span>
+        <button class="button button-gold" type={enabled ? 'submit' : 'button'}>{enabled ? 'Send Estimate Request' : 'Send Estimate Request — Demo Mode'} <span aria-hidden="true">→</span></button>
+      </fieldset>
+      <noscript><p>JavaScript is required for the security check. Requests cannot be submitted without it.</p></noscript>
+      <p id="estimate-status" role="status" aria-live="polite" aria-atomic="true" data-state="IDLE">{enabled ? 'Ready for your project details.' : 'Demo mode — Your information has not been sent.'}</p>
+    </form>
+  </div>
+</section>
+<script>
+  import { initContactForm } from '../lib/contact-client';
+  initContactForm();
+</script>

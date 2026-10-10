@@ -1,0 +1,37 @@
+[
+  {
+    "foreground": "goldText",
+    "background": "white",
+    "ratio": 5.1
+  },
+  {
+    "foreground": "deep",
+    "background": "gold",
+    "ratio": 7.95
+  },
+  {
+    "foreground": "deep",
+    "background": "goldHover",
+    "ratio": 6.15
+  },
+  {
+    "foreground": "white",
+    "background": "navy",
+    "ratio": 14.42
+  },
+  {
+    "foreground": "white",
+    "background": "blue",
+    "ratio": 10
+  },
+  {
+    "foreground": "gold",
+    "background": "blue",
+    "ratio": 4.7
+  },
+  {
+    "foreground": "secondary",
+    "background": "white",
+    "ratio": 6.32
+  }
+]

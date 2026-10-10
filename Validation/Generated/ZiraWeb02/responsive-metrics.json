@@ -1,0 +1,50 @@
+[
+  {
+    "name": "desktop",
+    "brokenAnchors": [],
+    "clientWidth": 1425,
+    "contentWidth": 1425,
+    "formCount": 0,
+    "h1Count": 1,
+    "missingImageAlt": 0,
+    "serviceColumns": 6,
+    "viewportHeight": 900,
+    "viewportWidth": 1440
+  },
+  {
+    "name": "tablet",
+    "brokenAnchors": [],
+    "clientWidth": 753,
+    "contentWidth": 753,
+    "formCount": 0,
+    "h1Count": 1,
+    "missingImageAlt": 0,
+    "serviceColumns": 3,
+    "viewportHeight": 1024,
+    "viewportWidth": 768
+  },
+  {
+    "name": "mobile",
+    "brokenAnchors": [],
+    "clientWidth": 378,
+    "contentWidth": 378,
+    "formCount": 0,
+    "h1Count": 1,
+    "missingImageAlt": 0,
+    "serviceColumns": 1,
+    "viewportHeight": 852,
+    "viewportWidth": 393
+  },
+  {
+    "name": "mobile-430",
+    "brokenAnchors": [],
+    "clientWidth": 415,
+    "contentWidth": 415,
+    "formCount": 0,
+    "h1Count": 1,
+    "missingImageAlt": 0,
+    "serviceColumns": 1,
+    "viewportHeight": 932,
+    "viewportWidth": 430
+  }
+]

@@ -1,0 +1,10 @@
+---
+import { Image } from 'astro:assets';
+import hero from '../assets/images/hero.webp';
+import Icon from './Icon.astro';
+---
+<section id="home" class="hero" aria-labelledby="hero-title">
+  <Image class="hero-image" src={hero} alt="Illustrative modern waterfront residence with a swimming pool and palm trees" widths={[640, 960, 1440, 1920]} sizes="100vw" format="webp" loading="eager" fetchpriority="high" />
+  <div class="hero-overlay"></div>
+  <div class="hero-content container"><div class="hero-copy"><p class="eyebrow">Building Your Vision</p><h1 id="hero-title">Quality Construction<br />for a <span>Better Tomorrow</span></h1><p>Zira Group Inc. provides residential and commercial construction, remodeling, and home improvement services throughout South Florida.</p><div class="hero-actions"><a class="button button-gold" href="#contact">Get a Free Estimate <Icon name="arrow" /></a><a class="button button-outline" href="#services">Our Services</a></div><ul class="hero-highlights" aria-label="Our focus"><li><Icon name="house" /><span>Residential &<br />commercial</span></li><li><Icon name="outdoor" /><span>Construction &<br />remodeling</span></li><li><Icon name="pin" /><span>South Florida<br />service areas</span></li></ul></div><p class="hero-signature" aria-hidden="true">Dream.<br />Build.<br /><span>Enjoy.</span></p></div>
+</section>

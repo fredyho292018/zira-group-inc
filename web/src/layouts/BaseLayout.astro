@@ -3,7 +3,7 @@ import '../styles/global.css';
 interface Props { title?: string; description?: string; }
 const {
   title = 'Zira Group Inc | Construction & Remodeling in South Florida',
-  description = 'Construction & Remodeling Services in South Florida. Building Your Vision. Creating Your Future.',
+  description = 'Residential and commercial construction, remodeling, and home improvement services throughout South Florida. Quality Construction for a Better Tomorrow.',
 } = Astro.props;
 const canonical = new URL(Astro.url.pathname, Astro.site);
 ---
@@ -13,7 +13,7 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content={description} />
-    <meta name="theme-color" content="#11293d" />
+    <meta name="theme-color" content="#102B46" />
     <link rel="canonical" href={canonical} />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <meta property="og:type" content="website" />
@@ -21,6 +21,7 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
+    <meta property="og:locale" content="en_US" />
     <title>{title}</title>
   </head>
   <body><a class="skip-link" href="#main">Skip to content</a><slot /></body>

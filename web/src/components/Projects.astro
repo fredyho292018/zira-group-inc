@@ -1,0 +1,14 @@
+---
+import { Image } from 'astro:assets';
+import hero from '../assets/images/hero.webp';
+import kitchen from '../assets/images/kitchen.webp';
+import roof from '../assets/images/roof.webp';
+import outdoor from '../assets/images/outdoor.webp';
+const projects = [
+  { title: 'Poolside Living', subtitle: 'Pool & outdoor inspiration', image: hero, alt: 'Illustrative swimming pool overlooking the water' },
+  { title: 'Kitchen Transformation', subtitle: 'Interior inspiration', image: kitchen, alt: 'Illustrative bright contemporary kitchen' },
+  { title: 'A Fresh Perspective', subtitle: 'Residential inspiration', image: roof, alt: 'Illustrative home exterior with palm trees' },
+  { title: 'Life Outdoors', subtitle: 'Outdoor living inspiration', image: outdoor, alt: 'Illustrative pergola and furnished outdoor space' },
+];
+---
+<section id="projects" class="projects-section section container" aria-labelledby="projects-title"><div class="projects-heading"><div><p class="eyebrow">Project inspiration</p><h2 id="projects-title">Imagine the Possibilities</h2></div><p class="gallery-disclosure">Illustrative concepts, not completed Zira projects.<br />Our verified project portfolio is coming soon.</p></div><div class="project-grid">{projects.map(project => <figure class="project-card"><Image src={project.image} alt={project.alt} widths={[320, 480, 720]} sizes="(min-width: 1024px) 25vw, (min-width: 640px) 50vw, 100vw" format="webp" loading="lazy" /><figcaption><h3>{project.title}</h3><p>{project.subtitle}</p><span>Illustrative example</span></figcaption></figure>)}</div></section>

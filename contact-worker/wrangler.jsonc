@@ -1,0 +1,12 @@
+{
+  "$schema": "https://raw.githubusercontent.com/cloudflare/workers-sdk/main/packages/wrangler/config-schema.json",
+  "name": "zira-contact",
+  "main": "src/worker.ts",
+  "compatibility_date": "2026-10-10",
+  "workers_dev": false,
+  "preview_urls": false,
+  "observability": { "enabled": false },
+  "vars": { "CONTACT_ENABLED": "false", "EMAIL_PROVIDER": "unselected" },
+  "durable_objects": { "bindings": [{ "name": "CONTACT", "class_name": "ContactCoordinator" }] },
+  "migrations": [{ "tag": "v1", "new_sqlite_classes": ["ContactCoordinator"] }]
+}

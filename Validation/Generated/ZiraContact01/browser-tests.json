@@ -1,0 +1,10 @@
+{
+  "fixture": "loopback only; simulated Turnstile and provider; no external transmission",
+  "requiredFields": "PASS: seven errors; focus fullName",
+  "invalidEmail": "PASS",
+  "invalidPhone": "PASS",
+  "providerFailure": "ERROR",
+  "unconfirmed200": "ERROR",
+  "duringRequest": "SUBMITTING; submit disabled",
+  "confirmedSimulatedReceipt": "SUCCESS; submit disabled"
+}

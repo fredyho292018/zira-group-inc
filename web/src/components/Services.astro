@@ -1,17 +1,21 @@
 ---
+import { Image } from 'astro:assets';
+import Icon from './Icon.astro';
+import hero from '../assets/images/hero.webp';
+import windows from '../assets/images/windows.webp';
+import kitchen from '../assets/images/kitchen.webp';
+import roof from '../assets/images/roof.webp';
+import outdoor from '../assets/images/outdoor.webp';
 const services = [
-  ['General Construction & Remodeling', 'Spaces built around your vision.'],
-  ['Pool Construction & Renovation', 'A fresh perspective on outdoor living.'],
-  ['Impact Windows & Doors', 'Thoughtful improvements for your property.'],
-  ['Kitchen & Bathroom Remodeling', 'Everyday spaces, reimagined.'],
-  ['Roofing & Exterior Improvements', 'A considered approach to your exterior.'],
-  ['Outdoor Living Spaces', 'Make room for life outside.'],
+  { id: 'construction', icon: 'house' as const, title: 'Construction & Remodeling', description: 'New spaces, thoughtful additions and complete renovations.', image: hero, alt: 'Illustrative modern coastal home', detail: 'Explore residential and commercial construction, additions and remodeling for the spaces you have in mind.' },
+  { id: 'pools', icon: 'pool' as const, title: 'Pool Construction & Renovation', description: 'Pools and outdoor spaces designed around the way you live.', image: hero, alt: 'Illustrative turquoise pool beside a modern residence', detail: 'Consider a new pool or a refreshed pool area as part of your outdoor living plans.' },
+  { id: 'windows', icon: 'windows' as const, title: 'Impact Windows & Doors', description: 'Window and door improvements for your property.', image: windows, alt: 'Illustrative black-framed floor-to-ceiling windows and doors', detail: 'Explore impact window and door options for your property. Product specifications and project requirements will be confirmed during consultation.' },
+  { id: 'kitchens', icon: 'kitchen' as const, title: 'Kitchen & Bathroom Remodeling', description: 'Beautiful, functional spaces for everyday living.', image: kitchen, alt: 'Illustrative bright kitchen with a quartz island', detail: 'Bring your ideas for kitchen and bathroom layouts, finishes and everyday functionality into focus.' },
+  { id: 'roofing', icon: 'roof' as const, title: 'Roofing & Exterior Improvements', description: 'Thoughtful updates from your roof to your exterior.', image: roof, alt: 'Illustrative Florida home with a charcoal hip roof', detail: 'Explore roofing and exterior improvements as part of a considered plan for your property.' },
+  { id: 'outdoor', icon: 'outdoor' as const, title: 'Outdoor Living Spaces', description: 'Patios, pergolas and spaces to enjoy life outside.', image: outdoor, alt: 'Illustrative furnished terrace beneath a timber pergola', detail: 'Consider patios, pergolas and outdoor living areas that connect your home with the outdoors.' },
 ];
 ---
-<section id="services" class="section container" aria-labelledby="services-title">
-  <p class="eyebrow">Our services</p>
-  <h2 id="services-title">Your next chapter starts here.</h2>
-  <div class="grid gap-5 md:grid-cols-2 lg:grid-cols-3 service-grid">
-    {services.map(([name, description], index) => <article class="service-card"><span class="service-number" aria-hidden="true">0{index + 1}</span><h3>{name}</h3><p>{description}</p></article>)}
-  </div>
+<section id="services" class="services-section section container" aria-labelledby="services-title">
+  <div class="section-intro"><p class="eyebrow">Our services</p><h2 id="services-title">Complete Construction & Remodeling Solutions</h2><p>From your first idea to the spaces you envision, explore construction and remodeling services for your South Florida property.</p></div>
+  <div class="service-grid">{services.map(service => <article class:list={['service-card', `service-${service.id}`]}><Image src={service.image} alt={service.alt} widths={[320, 480, 640]} sizes="(min-width: 1200px) 220px, (min-width: 640px) 33vw, 100vw" format="webp" loading="lazy" /><div class="service-body"><h3><Icon name={service.icon} /><span>{service.title}</span></h3><p>{service.description}</p><details class="service-details"><summary>Learn More <Icon name="arrow" /><span class="sr-only"> about {service.title}</span></summary><div><p>{service.detail}</p><a href="#contact">Discuss this service <Icon name="arrow" /></a></div></details></div></article>)}</div>
 </section>

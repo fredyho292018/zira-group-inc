@@ -1,0 +1,42 @@
+[
+  {
+    "name": "desktop",
+    "width": 1440,
+    "height": 900,
+    "client": 1425,
+    "columns": "360.734px 360.75px",
+    "content": 1425,
+    "formEnabled": "false",
+    "missingLabels": 0
+  },
+  {
+    "name": "tablet",
+    "width": 768,
+    "height": 1024,
+    "client": 753,
+    "columns": "311.5px 311.5px",
+    "content": 753,
+    "formEnabled": "false",
+    "missingLabels": 0
+  },
+  {
+    "name": "mobile",
+    "width": 393,
+    "height": 852,
+    "client": 378,
+    "columns": "288px",
+    "content": 378,
+    "formEnabled": "false",
+    "missingLabels": 0
+  },
+  {
+    "name": "mobile-430",
+    "width": 430,
+    "height": 932,
+    "client": 415,
+    "columns": "325px",
+    "content": 415,
+    "formEnabled": "false",
+    "missingLabels": 0
+  }
+]

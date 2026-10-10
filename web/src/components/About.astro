@@ -1,0 +1,6 @@
+---
+import { Image } from 'astro:assets';
+import roof from '../assets/images/roof.webp';
+import Icon from './Icon.astro';
+---
+<section id="about" class="about-section" aria-labelledby="about-title"><div class="about-copy"><p class="eyebrow">About Zira Group Inc.</p><h2 id="about-title">Building More<br />Than Structures</h2><p>We are a South Florida construction and remodeling company serving residential and commercial properties.</p><p>From a fresh perspective on your home to new possibilities for your property, our services bring your vision into focus.</p><a class="button button-gold" href="#contact">Let's Build Together <Icon name="arrow" /></a><ul class="about-focus"><li><Icon name="house" /><span>Residential &<br />commercial</span></li><li><Icon name="kitchen" /><span>Construction &<br />remodeling</span></li><li><Icon name="pin" /><span>South Florida<br />communities</span></li></ul></div><Image class="about-image" src={roof} alt="Illustrative architectural exterior with natural stone and tropical landscaping" widths={[640, 960, 1200]} sizes="(min-width: 768px) 50vw, 100vw" format="webp" loading="lazy" /></section>
